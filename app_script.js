@@ -9,7 +9,7 @@ const appScript = `
 
   const screensData = [
     { id: 1, title: "Onboarding & Microclimate Setup", persona: "home market", role: "Primary: Home & Market Growers" },
-    { id: 2, title: "Today's FarmCast Dashboard", persona: "home market farmer", role: "Primary: Daily Operations" },
+    { id: 2, title: "Today's Sabi Grow Dashboard", persona: "home market farmer", role: "Primary: Daily Operations" },
     { id: 3, title: "7-Day & Hourly Micro-Forecast", persona: "market farmer", role: "Secondary: Experienced Farmers" },
     { id: 4, title: "Smart Irrigation & Rain Advisor", persona: "home market farmer", role: "Primary: Resource Conservation" },
     { id: 5, title: "Biological Pressure Radar", persona: "home market farmer", role: "Primary: Pest & Fungal Health" },

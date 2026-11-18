@@ -1,6 +1,6 @@
 const styles = `
 /* ==========================================================================
-   FarmCast Agricultural Decision-Support Design System
+   Sabi Grow Agricultural Decision-Support Design System
    Mobile-First Figma Showcase (390x844px frames)
    ========================================================================== */
 

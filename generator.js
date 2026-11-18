@@ -61,7 +61,7 @@ function buildHtml() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmCast UI System — Figma Mobile Showcase</title>
+  <title>Sabi Grow UI System — Figma Mobile Showcase</title>
   <style>
     ${styles}
   </style>
@@ -76,7 +76,7 @@ function buildHtml() {
       </div>
       <div class="pres-title-wrap">
         <h1>
-          <span>FarmCast</span>
+          <span>Sabi Grow</span>
           <span class="badge-tag">Design System</span>
         </h1>
         <p>Weather-Based Small-Scale Grower & Garden Decision-Support • 390×844px Mobile Viewport</p>
@@ -129,7 +129,7 @@ function buildHtml() {
     <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:32px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
       <div style="display:flex; flex-direction:column; gap:4px;">
         <div style="font-size:15px; font-weight:800; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-          <span>FarmCast 12-Screen Functional Architecture</span>
+          <span>Sabi Grow 12-Screen Functional Architecture</span>
           <span class="badge-tag" style="background:var(--tint-brand-10); color:var(--brand-primary);">Figma 390×844px Standard</span>
         </div>
         <p style="font-size:13px; color:var(--text-secondary); max-width:900px;">
@@ -177,7 +177,7 @@ function buildHtml() {
 
     <!-- Active Screen Metadata Card -->
     <div id="proto-screen-counter" style="font-size:13px; font-weight:700; color:var(--brand-primary); background:var(--tint-brand-10); border:1px solid var(--tint-brand-20); padding:6px 16px; border-radius:var(--radius-full);">
-      Screen 02 of 12 • Today's FarmCast Dashboard
+      Screen 02 of 12 • Today's Sabi Grow Dashboard
     </div>
 
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->

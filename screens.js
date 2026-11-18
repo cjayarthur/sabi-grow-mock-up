@@ -63,7 +63,7 @@ const screens = [
 
         <div style="display:flex; flex-direction:column; gap:6px;">
           <h2 style="font-size:22px; font-weight:800; color:var(--text-primary); letter-spacing:-0.02em;">Calibrate your local ground</h2>
-          <p style="font-size:13px; color:var(--text-secondary);">FarmCast models weather at soil level, calculating frost sinks, windbreak shelter, and water drainage.</p>
+          <p style="font-size:13px; color:var(--text-secondary);">Sabi Grow models weather at soil level, calculating frost sinks, windbreak shelter, and water drainage.</p>
         </div>
 
         <!-- Form Section 1 -->
@@ -133,10 +133,10 @@ const screens = [
     `
   },
 
-  // SCREEN 2: Today's FarmCast Dashboard
+  // SCREEN 2: Today's Sabi Grow Dashboard
   {
     id: 2,
-    title: "Today's FarmCast Dashboard",
+    title: "Today's Sabi Grow Dashboard",
     persona: "Primary: Daily Operations",
     function: "Grower Action Index, Urgent Alerts & Tasks",
     html: `
