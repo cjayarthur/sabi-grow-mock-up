@@ -173,6 +173,9 @@ function buildHtml() {
         <span>Next</span>
         ${icons.chevronRight('w-4 h-4')}
       </button>
+      <button class="proto-nav-btn" onclick="toggleNativeMode()" style="background:var(--tint-brand-10); color:var(--brand-primary); border-color:var(--tint-brand-20);" title="Toggle Edge-to-Edge Fullscreen">
+        <span>⛶ App View</span>
+      </button>
     </div>
 
     <!-- Active Screen Metadata Card -->
@@ -182,6 +185,7 @@ function buildHtml() {
 
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->
     <div class="mobile-frame" id="interactive-phone-frame">
+      <button class="floating-exit-btn" onclick="toggleNativeMode()" title="Exit full app view">✕ Exit</button>
       ${protoScreensHtml}
     </div>
 

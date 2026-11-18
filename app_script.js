@@ -167,6 +167,11 @@ const appScript = `
   }
 
   // Interactive Checklist Toggler
+  
+  function toggleNativeMode() {
+    document.body.classList.toggle('native-app-mode');
+  }
+
   function toggleChecklist(el) {
     el.classList.toggle('checked');
     const box = el.querySelector('.check-box');
@@ -182,7 +187,11 @@ const appScript = `
   // Initialize on Load
   window.addEventListener('DOMContentLoaded', () => {
     setTheme('light');
-    setViewMode('grid');
+    if (window.innerWidth <= 768) {
+      setViewMode('proto');
+    } else {
+      setViewMode('grid');
+    }
   });
 </script>
 `;

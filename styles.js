@@ -963,6 +963,220 @@ body {
   color: var(--text-on-brand);
 }
 
+
+/* ==========================================================================
+   Responsive Mobile-First Scaling & Viewport Adaptation
+   ========================================================================== */
+
+/* Floating exit button for full native view */
+.floating-exit-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 999;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  display: none;
+}
+
+body.native-app-mode .floating-exit-btn {
+  display: block !important;
+}
+
+body.native-app-mode .pres-bar,
+body.native-app-mode .sub-bar,
+body.native-app-mode .proto-nav-bar,
+body.native-app-mode #proto-screen-counter,
+body.native-app-mode .proto-view-container > div:last-child {
+  display: none !important;
+}
+
+body.native-app-mode {
+  overflow: hidden !important;
+}
+
+body.native-app-mode .proto-view-container {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+
+body.native-app-mode #interactive-phone-frame {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  min-height: 100dvh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.native-app-mode .dynamic-island {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  /* Presentation Header */
+  .pres-bar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .pres-title-wrap h1 {
+    font-size: 15px;
+  }
+  .pres-title-wrap p {
+    display: none;
+  }
+  .pres-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .segmented-ctl {
+    flex: 1;
+  }
+  .seg-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+  .theme-toggle-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .sub-bar {
+    padding: 6px 12px;
+    gap: 8px;
+  }
+  .filter-group {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .zoom-group {
+    display: none;
+  }
+
+  /* Canvas & Grid */
+  .canvas-container {
+    padding: 12px 10px 60px;
+  }
+  .screens-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    width: 100%;
+  }
+  .screen-column {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+  }
+  .screens-grid .mobile-frame {
+    width: 100%;
+    max-width: 390px;
+    height: 780px;
+    min-height: 780px;
+    border-width: 4px;
+    border-radius: 28px;
+  }
+
+  /* Prototype Container */
+  .proto-view-container {
+    padding: 6px 8px 30px;
+    gap: 10px;
+    width: 100%;
+  }
+  .proto-nav-bar {
+    padding: 6px 10px;
+    width: 100%;
+    max-width: 390px;
+    gap: 6px;
+  }
+  .proto-nav-select {
+    max-width: 150px;
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .proto-nav-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  #proto-screen-counter {
+    font-size: 11px;
+    padding: 4px 10px;
+    text-align: center;
+    width: 100%;
+    max-width: 390px;
+  }
+
+  /* Adaptive Mobile Phone Frame */
+  #interactive-phone-frame {
+    width: 100%;
+    max-width: 390px;
+    height: calc(100dvh - 140px);
+    min-height: 520px;
+    max-height: 844px;
+    border: 2px solid var(--border-subtle);
+    border-radius: 28px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Hide simulated dynamic island on actual phones to prevent clashing with phone camera */
+  #interactive-phone-frame .dynamic-island {
+    display: none;
+  }
+  #interactive-phone-frame .status-bar {
+    height: 38px;
+    padding: 8px 16px 0;
+    font-size: 11px;
+  }
+  #interactive-phone-frame .bottom-tab-bar {
+    height: 64px;
+    padding: 2px 4px 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  /* Extra narrow devices */
+  .canvas-container {
+    padding: 8px 4px 40px;
+  }
+  .proto-view-container {
+    padding: 4px 4px 20px;
+  }
+  #interactive-phone-frame {
+    border-radius: 20px;
+    border-width: 1.5px;
+    height: calc(100dvh - 120px);
+    min-height: 480px;
+  }
+  .mobile-viewport {
+    padding: 6px 10px 16px;
+    gap: 12px;
+  }
+  .screen-app-header .header-loc-title {
+    font-size: 15px;
+  }
+  .metric-value {
+    font-size: 18px;
+  }
+  .tab-item span {
+    font-size: 9px;
+  }
+}
+
 /* Hide helper */
 .hidden {
   display: none !important;
