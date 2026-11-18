@@ -185,6 +185,24 @@ function buildHtml() {
 
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->
     <div class="mobile-frame" id="interactive-phone-frame">
+      <!-- Slide-Up Bottom Sheet Modal Component -->
+      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeSheet()">
+        <div class="modal-sheet-content" onclick="event.stopPropagation()">
+          <div class="modal-drag-handle"></div>
+          <div class="modal-sheet-header">
+            <h3 id="modal-sheet-title" style="font-size:15px; font-weight:800; color:var(--text-primary);">Details</h3>
+            <button class="icon-action-btn" onclick="closeSheet()" style="width:28px; height:28px;">✕</button>
+          </div>
+          <div id="modal-sheet-body"></div>
+        </div>
+      </div>
+
+      <!-- Floating Toast Pill -->
+      <div class="app-toast" id="app-toast">
+        <span id="toast-icon"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span id="toast-msg">Action completed</span>
+      </div>
+
       <button class="floating-exit-btn" onclick="toggleNativeMode()" title="Exit full app view">✕ Exit</button>
       ${protoScreensHtml}
     </div>

@@ -3,23 +3,23 @@ const icons = require('./icons');
 function renderBottomNav(activeTab = 'today') {
   return `
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item ${activeTab === 'today' ? 'active' : ''}" onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item ${activeTab === 'today' ? 'active' : ''}" data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       ${icons.sprout('w-5 h-5')}
       <span>Today</span>
     </button>
-    <button class="tab-item ${activeTab === 'weather' ? 'active' : ''}" onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item ${activeTab === 'weather' ? 'active' : ''}" data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       ${icons.cloudSun('w-5 h-5')}
       <span>Weather</span>
     </button>
-    <button class="tab-item ${activeTab === 'plots' ? 'active' : ''}" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item ${activeTab === 'plots' ? 'active' : ''}" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       ${icons.layoutGrid('w-5 h-5')}
       <span>Plots</span>
     </button>
-    <button class="tab-item ${activeTab === 'alerts' ? 'active' : ''}" onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item ${activeTab === 'alerts' ? 'active' : ''}" data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       ${icons.shieldAlert('w-5 h-5')}
       <span>Alerts</span>
     </button>
-    <button class="tab-item ${activeTab === 'profile' ? 'active' : ''}" onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item ${activeTab === 'profile' ? 'active' : ''}" data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       ${icons.settings('w-5 h-5')}
       <span>Profile</span>
     </button>
@@ -154,7 +154,7 @@ const screens = [
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="navigateToScreen(7)" title="Alerts">
+          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class=\'alert-box-urgent\'><strong>Light Freeze Watch</strong><p style=\'font-size:12px;\'>Friday 3:30 AM (29°F). Protection required.</p><button class=\'btn-primary\' style=\'margin-top:8px; padding:8px;\' onclick=\'closeSheet(); navigateToScreen(7);\'>View Mitigation Checklist →</button></div>')" title="Alerts">
             ${icons.bell('w-4 h-4')}
             <span class="badge-dot-alert"></span>
           </div>
@@ -175,7 +175,7 @@ const screens = [
               <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Prime transplanting & direct-sow conditions before tomorrow's dip.</p>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;">68°<span style="font-size:16px; font-weight:500; color:var(--text-secondary);">F</span></div>
+              <div id="hero-temp-display" style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;" data-unit-f="68">68°F</div>
               <span style="font-size:11px; color:var(--text-secondary);">Low 42°F • Clear</span>
             </div>
           </div>
@@ -240,37 +240,37 @@ const screens = [
             <span style="font-size:11px; color:var(--brand-primary); font-weight:600; cursor:pointer;" onclick="navigateToScreen(3)">7-Day Forecast →</span>
           </div>
           <div class="agro-strip">
-            <div class="strip-item active">
+            <div class="strip-item active" onclick="selectHour(this, 62, 'Current')">
               <span class="strip-hour">Now</span>
               ${icons.sun('w-4 h-4')}
               <span class="strip-temp">62°</span>
               <span class="strip-sub">4 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 65, '11:00 AM')">
               <span class="strip-hour">11 AM</span>
               ${icons.sun('w-4 h-4')}
               <span class="strip-temp">65°</span>
               <span class="strip-sub">5 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 68, '2:00 PM (Peak)')">
               <span class="strip-hour">2 PM</span>
               ${icons.sun('w-4 h-4')}
               <span class="strip-temp">68°</span>
               <span class="strip-sub">7 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 63, '5:00 PM')">
               <span class="strip-hour">5 PM</span>
               ${icons.cloudSun('w-4 h-4')}
               <span class="strip-temp">63°</span>
               <span class="strip-sub">6 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 51, '8:00 PM')">
               <span class="strip-hour">8 PM</span>
               ${icons.moon('w-4 h-4')}
               <span class="strip-temp">51°</span>
               <span class="strip-sub">3 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 45, '11:00 PM')">
               <span class="strip-hour">11 PM</span>
               ${icons.moon('w-4 h-4')}
               <span class="strip-temp">45°</span>
@@ -323,14 +323,14 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Viewing satellite radar')">${icons.cloudRain('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style=\'background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;\'><div style=\'font-size:14px; font-weight:700; color:var(--accent-rain);\'>🌧️ Rain Reflectivity Scan (85km)</div><p style=\'font-size:12px; margin-top:6px;\'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')">${icons.cloudRain('w-4 h-4')}</div>
         </div>
 
         <!-- Segmented Tab Toggle -->
         <div class="segmented-ctl" style="width:100%; justify-content:space-between;">
-          <button class="seg-btn active" style="flex:1; justify-content:center;">7-Day Outlook</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing 48-Hour High-Resolution Soil Model')">Hourly Curve</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing Soil Temperature Profiles at 2, 4, 8 inches')">Soil Depth</button>
+          <button class="seg-btn active" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('7day', this)">7-Day Outlook</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('hourly', this)">Hourly Curve</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('soil', this)">Soil Depth</button>
         </div>
 
         <!-- Spraying & Field Work Window Banner -->
@@ -347,7 +347,7 @@ const screens = [
         </div>
 
         <!-- 7-Day Agronomic Forecast List -->
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div id="forecast-7day-list" style="display:flex; flex-direction:column; gap:8px;">
           <!-- Day 1 -->
           <div class="agro-card" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -439,7 +439,147 @@ const screens = [
           </div>
         </div>
 
-        <!-- Growing Degree Days (GDD) Metric -->
+        
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title">${icons.wind('w-4 h-4')} 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title">${icons.thermometer('w-4 h-4')} Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title">${icons.wind('w-4 h-4')} 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title">${icons.thermometer('w-4 h-4')} Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Growing Degree Days (GDD) Metric -->
         <div class="agro-card">
           <div class="card-header-row">
             <span class="card-title">${icons.thermometer('w-4 h-4')} Growing Degree Days (GDD)</span>
@@ -582,7 +722,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Log new pest sighting')">${icons.bug('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Select Organism</label><select class=\'input-field\'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Pest sighting submitted to regional model");\'>Submit to Regional Grid</button></div>')">${icons.bug('w-4 h-4')}</div>
         </div>
 
         <!-- Summary Bar -->
@@ -691,16 +831,16 @@ const screens = [
 
         <!-- Crop Filter Pills -->
         <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
-          <button class="filter-pill active">All Crops (14)</button>
-          <button class="filter-pill" onclick="alert('Filtering Direct Sow')">Direct Sow</button>
-          <button class="filter-pill" onclick="alert('Filtering Indoor Trays')">Indoor Seed Flats</button>
-          <button class="filter-pill" onclick="alert('Filtering Outdoor Transplants')">Transplants</button>
+          <button class="filter-pill active" onclick="filterCrops('all', this)">All Crops (14)</button>
+          <button class="filter-pill" onclick="filterCrops('direct', this)">Direct Sow</button>
+          <button class="filter-pill" onclick="filterCrops('indoor', this)">Indoor Flats</button>
+          <button class="filter-pill" onclick="filterCrops('transplant', this)">Transplants</button>
         </div>
 
         <!-- Crop Cards -->
         <div style="display:flex; flex-direction:column; gap:8px;">
           <!-- Crop 1 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="direct" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sugar Snap Peas (Oregon Giant)</div>
@@ -714,7 +854,7 @@ const screens = [
           </div>
 
           <!-- Crop 2 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">San Marzano Heirloom Tomatoes</div>
@@ -728,7 +868,7 @@ const screens = [
           </div>
 
           <!-- Crop 3 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="transplant" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Lacinato Dinosaur Kale</div>
@@ -739,7 +879,7 @@ const screens = [
           </div>
 
           <!-- Crop 4: Warning -->
-          <div class="agro-card" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sweet Genovese Basil</div>
@@ -877,7 +1017,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="alert('Adding new bed')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Bed Name</label><input type=\'text\' class=\'input-field\' value=\'Bed 5 • Heirloom Cucurbits\' /><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Bed 5 created with sensor mapping");\'>Save Plot</button></div>')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -1055,7 +1195,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Post your own field observation')">${icons.users('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Your Observation</label><textarea class=\'input-field\' rows=\'3\' placeholder=\'Report blooms, insects, or frost spots...\'></textarea><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");\'>Publish to Network</button></div>')">${icons.users('w-4 h-4')}</div>
         </div>
 
         <!-- Filter Tabs -->
@@ -1209,7 +1349,7 @@ const screens = [
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title">${icons.wifi('w-4 h-4')} Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="alert('Pairing new Bluetooth probe')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style=\'text-align:center; padding:16px;\'><div style=\'font-size:24px; margin-bottom:8px;\'>📡</div><div style=\'font-weight:700;\'>Scanning for BLE 5.0 Soil Probes...</div><p style=\'font-size:12px; color:var(--text-secondary); margin:6px 0 12px;\'>Hold probe button for 3 seconds.</p><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Soil Probe #02 paired successfully");\'>Simulate Pair</button></div>')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -1242,16 +1382,16 @@ const screens = [
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0;">
             <span style="font-size:13px; color:var(--text-primary);">Temperature Scale</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">°F</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Celsius')">°C</button>
+              <button class="seg-btn active" data-unit-toggle="imperial" style="padding:2px 8px; font-size:11px;" onclick="setUnits('imperial')">°F</button>
+              <button class="seg-btn" data-unit-toggle="metric" style="padding:2px 8px; font-size:11px;" onclick="setUnits('metric')">°C</button>
             </div>
           </div>
 
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-top:1px solid var(--border-subtle);">
             <span style="font-size:13px; color:var(--text-primary);">Precipitation Units</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">Inches</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Millimeters')">mm</button>
+              <button class="seg-btn active" data-rain-toggle="in" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Inches')">Inches</button>
+              <button class="seg-btn" data-rain-toggle="mm" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Millimeters (mm)')">mm</button>
             </div>
           </div>
 
@@ -1316,7 +1456,7 @@ const screens = [
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="alert('Regional Frost Bulletin Editor opened')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><div style=\'font-weight:700; color:var(--accent-urgent);\'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class=\'input-field\' rows=\'3\'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class=\'btn-primary\' style=\'background:var(--accent-urgent);\' onclick=\'closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");\'>Transmit Emergency Alert</button></div>')">
             ${icons.frost('w-4 h-4')} Broadcast Regional Frost Bulletin
           </button>
           <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">

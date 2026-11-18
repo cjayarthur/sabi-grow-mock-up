@@ -1184,6 +1184,163 @@ body.native-app-mode .dynamic-island {
   }
 }
 
+
+/* ==========================================================================
+   High-Fidelity Interactive Screen Transitions & Micro-Interactions
+   ========================================================================== */
+
+/* Directional Screen Entry Animations */
+@keyframes screenSlideInRight {
+  0% { transform: translateX(36px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes screenSlideInLeft {
+  0% { transform: translateX(-36px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes screenTabCrossFade {
+  0% { transform: scale(0.975); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-slide-right {
+  animation: screenSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-slide-left {
+  animation: screenSlideInLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-tab-fade {
+  animation: screenTabCrossFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Micro-Interactions & Tap Physics */
+.agro-card, .metric-tile, .alert-box-urgent, .alert-box-warning, .alert-box-rain, .checklist-item, .strip-item, .filter-pill, .seg-btn, .btn-primary, .btn-secondary, .icon-action-btn, .tab-item {
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.agro-card:active, .metric-tile:active, .checklist-item:active, .strip-item:active {
+  transform: scale(0.975);
+}
+
+.btn-primary:active, .btn-secondary:active, .icon-action-btn:active, .filter-pill:active {
+  transform: scale(0.94);
+}
+
+/* Tab Bar Bouncy Icon Spring */
+.tab-item:active svg {
+  transform: scale(0.82);
+}
+
+.tab-item.tab-popped svg {
+  animation: tabSpringPop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes tabSpringPop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.26); }
+  100% { transform: scale(1); }
+}
+
+/* Checkbox Pop Animation */
+.checklist-item.just-checked .check-box {
+  animation: checkboxPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes checkboxPop {
+  0% { transform: scale(0.7); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Slide-Up Bottom Sheet Modal */
+.modal-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.26s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-sheet-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-sheet-content {
+  width: 100%;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 28px 28px 0 0;
+  padding: 12px 20px 32px;
+  box-shadow: 0 -12px 36px rgba(0,0,0,0.25);
+  transform: translateY(100%);
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 82%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-sheet-backdrop.active .modal-sheet-content {
+  transform: translateY(0);
+}
+
+.modal-drag-handle {
+  width: 38px;
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  margin: 0 auto 4px;
+}
+
+.modal-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Floating Toast Notification */
+.app-toast {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+  background: var(--brand-primary);
+  color: var(--text-on-brand);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-lg);
+  z-index: 850;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.app-toast.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
 /* Hide helper */
 .hidden {
   display: none !important;
@@ -1424,7 +1581,7 @@ body.native-app-mode .dynamic-island {
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="navigateToScreen(7)" title="Alerts">
+          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class='alert-box-urgent'><strong>Light Freeze Watch</strong><p style='font-size:12px;'>Friday 3:30 AM (29°F). Protection required.</p><button class='btn-primary' style='margin-top:8px; padding:8px;' onclick='closeSheet(); navigateToScreen(7);'>View Mitigation Checklist →</button></div>')" title="Alerts">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
             <span class="badge-dot-alert"></span>
           </div>
@@ -1445,7 +1602,7 @@ body.native-app-mode .dynamic-island {
               <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Prime transplanting & direct-sow conditions before tomorrow's dip.</p>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;">68°<span style="font-size:16px; font-weight:500; color:var(--text-secondary);">F</span></div>
+              <div id="hero-temp-display" style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;" data-unit-f="68">68°F</div>
               <span style="font-size:11px; color:var(--text-secondary);">Low 42°F • Clear</span>
             </div>
           </div>
@@ -1510,37 +1667,37 @@ body.native-app-mode .dynamic-island {
             <span style="font-size:11px; color:var(--brand-primary); font-weight:600; cursor:pointer;" onclick="navigateToScreen(3)">7-Day Forecast →</span>
           </div>
           <div class="agro-strip">
-            <div class="strip-item active">
+            <div class="strip-item active" onclick="selectHour(this, 62, 'Current')">
               <span class="strip-hour">Now</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">62°</span>
               <span class="strip-sub">4 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 65, '11:00 AM')">
               <span class="strip-hour">11 AM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">65°</span>
               <span class="strip-sub">5 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 68, '2:00 PM (Peak)')">
               <span class="strip-hour">2 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">68°</span>
               <span class="strip-sub">7 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 63, '5:00 PM')">
               <span class="strip-hour">5 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
               <span class="strip-temp">63°</span>
               <span class="strip-sub">6 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 51, '8:00 PM')">
               <span class="strip-hour">8 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
               <span class="strip-temp">51°</span>
               <span class="strip-sub">3 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 45, '11:00 PM')">
               <span class="strip-hour">11 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
               <span class="strip-temp">45°</span>
@@ -1575,23 +1732,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item active" onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item active" data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -1637,14 +1794,14 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Viewing satellite radar')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style='background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;'><div style='font-size:14px; font-weight:700; color:var(--accent-rain);'>🌧️ Rain Reflectivity Scan (85km)</div><p style='font-size:12px; margin-top:6px;'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
         </div>
 
         <!-- Segmented Tab Toggle -->
         <div class="segmented-ctl" style="width:100%; justify-content:space-between;">
-          <button class="seg-btn active" style="flex:1; justify-content:center;">7-Day Outlook</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing 48-Hour High-Resolution Soil Model')">Hourly Curve</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing Soil Temperature Profiles at 2, 4, 8 inches')">Soil Depth</button>
+          <button class="seg-btn active" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('7day', this)">7-Day Outlook</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('hourly', this)">Hourly Curve</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('soil', this)">Soil Depth</button>
         </div>
 
         <!-- Spraying & Field Work Window Banner -->
@@ -1661,7 +1818,7 @@ body.native-app-mode .dynamic-island {
         </div>
 
         <!-- 7-Day Agronomic Forecast List -->
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div id="forecast-7day-list" style="display:flex; flex-direction:column; gap:8px;">
           <!-- Day 1 -->
           <div class="agro-card" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -1753,7 +1910,147 @@ body.native-app-mode .dynamic-island {
           </div>
         </div>
 
-        <!-- Growing Degree Days (GDD) Metric -->
+        
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg> 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg> 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Growing Degree Days (GDD) Metric -->
         <div class="agro-card">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Growing Degree Days (GDD)</span>
@@ -1770,23 +2067,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item active" data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -1922,23 +2219,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item active" data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -1984,7 +2281,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Log new pest sighting')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Select Organism</label><select class='input-field'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class='btn-primary' onclick='closeSheet(); showToast("✓ Pest sighting submitted to regional model");'>Submit to Regional Grid</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
         </div>
 
         <!-- Summary Bar -->
@@ -2059,23 +2356,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item active" data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2137,16 +2434,16 @@ body.native-app-mode .dynamic-island {
 
         <!-- Crop Filter Pills -->
         <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
-          <button class="filter-pill active">All Crops (14)</button>
-          <button class="filter-pill" onclick="alert('Filtering Direct Sow')">Direct Sow</button>
-          <button class="filter-pill" onclick="alert('Filtering Indoor Trays')">Indoor Seed Flats</button>
-          <button class="filter-pill" onclick="alert('Filtering Outdoor Transplants')">Transplants</button>
+          <button class="filter-pill active" onclick="filterCrops('all', this)">All Crops (14)</button>
+          <button class="filter-pill" onclick="filterCrops('direct', this)">Direct Sow</button>
+          <button class="filter-pill" onclick="filterCrops('indoor', this)">Indoor Flats</button>
+          <button class="filter-pill" onclick="filterCrops('transplant', this)">Transplants</button>
         </div>
 
         <!-- Crop Cards -->
         <div style="display:flex; flex-direction:column; gap:8px;">
           <!-- Crop 1 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="direct" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sugar Snap Peas (Oregon Giant)</div>
@@ -2160,7 +2457,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 2 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">San Marzano Heirloom Tomatoes</div>
@@ -2174,7 +2471,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 3 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="transplant" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Lacinato Dinosaur Kale</div>
@@ -2185,7 +2482,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 4: Warning -->
-          <div class="agro-card" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sweet Genovese Basil</div>
@@ -2201,23 +2498,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2349,23 +2646,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item active" data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2411,7 +2708,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="alert('Adding new bed')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Bed Name</label><input type='text' class='input-field' value='Bed 5 • Heirloom Cucurbits' /><button class='btn-primary' onclick='closeSheet(); showToast("✓ Bed 5 created with sensor mapping");'>Save Plot</button></div>')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -2486,23 +2783,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2615,23 +2912,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2677,7 +2974,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Post your own field observation')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Your Observation</label><textarea class='input-field' rows='3' placeholder='Report blooms, insects, or frost spots...'></textarea><button class='btn-primary' onclick='closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");'>Publish to Network</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         </div>
 
         <!-- Filter Tabs -->
@@ -2754,23 +3051,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item active" data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -2874,7 +3171,7 @@ body.native-app-mode .dynamic-island {
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="alert('Pairing new Bluetooth probe')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style='text-align:center; padding:16px;'><div style='font-size:24px; margin-bottom:8px;'>📡</div><div style='font-weight:700;'>Scanning for BLE 5.0 Soil Probes...</div><p style='font-size:12px; color:var(--text-secondary); margin:6px 0 12px;'>Hold probe button for 3 seconds.</p><button class='btn-primary' onclick='closeSheet(); showToast("✓ Soil Probe #02 paired successfully");'>Simulate Pair</button></div>')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -2907,16 +3204,16 @@ body.native-app-mode .dynamic-island {
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0;">
             <span style="font-size:13px; color:var(--text-primary);">Temperature Scale</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">°F</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Celsius')">°C</button>
+              <button class="seg-btn active" data-unit-toggle="imperial" style="padding:2px 8px; font-size:11px;" onclick="setUnits('imperial')">°F</button>
+              <button class="seg-btn" data-unit-toggle="metric" style="padding:2px 8px; font-size:11px;" onclick="setUnits('metric')">°C</button>
             </div>
           </div>
 
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-top:1px solid var(--border-subtle);">
             <span style="font-size:13px; color:var(--text-primary);">Precipitation Units</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">Inches</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Millimeters')">mm</button>
+              <button class="seg-btn active" data-rain-toggle="in" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Inches')">Inches</button>
+              <button class="seg-btn" data-rain-toggle="mm" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Millimeters (mm)')">mm</button>
             </div>
           </div>
 
@@ -2931,23 +3228,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item active" data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -3024,7 +3321,7 @@ body.native-app-mode .dynamic-island {
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="alert('Regional Frost Bulletin Editor opened')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style='display:flex; flex-direction:column; gap:8px;'><div style='font-weight:700; color:var(--accent-urgent);'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class='input-field' rows='3'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class='btn-primary' style='background:var(--accent-urgent);' onclick='closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");'>Transmit Emergency Alert</button></div>')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 20-1.25-2.5L6 18M14 20l1.25-2.5L18 18M10 4l-1.25 2.5L6 6M14 4l1.25 2.5L18 6M2 12h20M12 2v20M20 10l-2.5 1.25L18 14M4 10l2.5 1.25L6 14"/></svg> Broadcast Regional Frost Bulletin
           </button>
           <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">
@@ -3140,6 +3437,24 @@ body.native-app-mode .dynamic-island {
 
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->
     <div class="mobile-frame" id="interactive-phone-frame">
+      <!-- Slide-Up Bottom Sheet Modal Component -->
+      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeSheet()">
+        <div class="modal-sheet-content" onclick="event.stopPropagation()">
+          <div class="modal-drag-handle"></div>
+          <div class="modal-sheet-header">
+            <h3 id="modal-sheet-title" style="font-size:15px; font-weight:800; color:var(--text-primary);">Details</h3>
+            <button class="icon-action-btn" onclick="closeSheet()" style="width:28px; height:28px;">✕</button>
+          </div>
+          <div id="modal-sheet-body"></div>
+        </div>
+      </div>
+
+      <!-- Floating Toast Pill -->
+      <div class="app-toast" id="app-toast">
+        <span id="toast-icon"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span id="toast-msg">Action completed</span>
+      </div>
+
       <button class="floating-exit-btn" onclick="toggleNativeMode()" title="Exit full app view">✕ Exit</button>
       
       <div class="proto-screen-content hidden" data-screen-id="1" style="height:100%; display:flex; flex-direction:column;">
@@ -3268,7 +3583,7 @@ body.native-app-mode .dynamic-island {
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="navigateToScreen(7)" title="Alerts">
+          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class='alert-box-urgent'><strong>Light Freeze Watch</strong><p style='font-size:12px;'>Friday 3:30 AM (29°F). Protection required.</p><button class='btn-primary' style='margin-top:8px; padding:8px;' onclick='closeSheet(); navigateToScreen(7);'>View Mitigation Checklist →</button></div>')" title="Alerts">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
             <span class="badge-dot-alert"></span>
           </div>
@@ -3289,7 +3604,7 @@ body.native-app-mode .dynamic-island {
               <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Prime transplanting & direct-sow conditions before tomorrow's dip.</p>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;">68°<span style="font-size:16px; font-weight:500; color:var(--text-secondary);">F</span></div>
+              <div id="hero-temp-display" style="font-size:32px; font-weight:800; color:var(--text-primary); line-height:1;" data-unit-f="68">68°F</div>
               <span style="font-size:11px; color:var(--text-secondary);">Low 42°F • Clear</span>
             </div>
           </div>
@@ -3354,37 +3669,37 @@ body.native-app-mode .dynamic-island {
             <span style="font-size:11px; color:var(--brand-primary); font-weight:600; cursor:pointer;" onclick="navigateToScreen(3)">7-Day Forecast →</span>
           </div>
           <div class="agro-strip">
-            <div class="strip-item active">
+            <div class="strip-item active" onclick="selectHour(this, 62, 'Current')">
               <span class="strip-hour">Now</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">62°</span>
               <span class="strip-sub">4 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 65, '11:00 AM')">
               <span class="strip-hour">11 AM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">65°</span>
               <span class="strip-sub">5 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 68, '2:00 PM (Peak)')">
               <span class="strip-hour">2 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
               <span class="strip-temp">68°</span>
               <span class="strip-sub">7 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 63, '5:00 PM')">
               <span class="strip-hour">5 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
               <span class="strip-temp">63°</span>
               <span class="strip-sub">6 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 51, '8:00 PM')">
               <span class="strip-hour">8 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
               <span class="strip-temp">51°</span>
               <span class="strip-sub">3 mph</span>
             </div>
-            <div class="strip-item">
+            <div class="strip-item" onclick="selectHour(this, 45, '11:00 PM')">
               <span class="strip-hour">11 PM</span>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
               <span class="strip-temp">45°</span>
@@ -3419,23 +3734,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item active" onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item active" data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -3469,14 +3784,14 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Viewing satellite radar')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style='background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;'><div style='font-size:14px; font-weight:700; color:var(--accent-rain);'>🌧️ Rain Reflectivity Scan (85km)</div><p style='font-size:12px; margin-top:6px;'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
         </div>
 
         <!-- Segmented Tab Toggle -->
         <div class="segmented-ctl" style="width:100%; justify-content:space-between;">
-          <button class="seg-btn active" style="flex:1; justify-content:center;">7-Day Outlook</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing 48-Hour High-Resolution Soil Model')">Hourly Curve</button>
-          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="alert('Showing Soil Temperature Profiles at 2, 4, 8 inches')">Soil Depth</button>
+          <button class="seg-btn active" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('7day', this)">7-Day Outlook</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('hourly', this)">Hourly Curve</button>
+          <button class="seg-btn" style="flex:1; justify-content:center;" onclick="switchForecastSubTab('soil', this)">Soil Depth</button>
         </div>
 
         <!-- Spraying & Field Work Window Banner -->
@@ -3493,7 +3808,7 @@ body.native-app-mode .dynamic-island {
         </div>
 
         <!-- 7-Day Agronomic Forecast List -->
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div id="forecast-7day-list" style="display:flex; flex-direction:column; gap:8px;">
           <!-- Day 1 -->
           <div class="agro-card" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -3585,7 +3900,147 @@ body.native-app-mode .dynamic-island {
           </div>
         </div>
 
-        <!-- Growing Degree Days (GDD) Metric -->
+        
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg> 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Hourly High-Res Chart Panel (Hidden by default) -->
+        <div id="forecast-hourly-chart" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg> 24-Hour Spray & Wind Model</span>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; height:120px; padding:10px 4px 0; border-bottom:1px solid var(--border-subtle);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">4 mph</span>
+                <div style="width:24px; height:35px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">5 mph</span>
+                <div style="width:24px; height:45px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 AM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">8 mph</span>
+                <div style="width:24px; height:75px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">12 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--accent-warning); font-weight:700;">9 mph</span>
+                <div style="width:24px; height:85px; background:var(--accent-warning); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">3 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-secondary); font-weight:700;">6 mph</span>
+                <div style="width:24px; height:55px; background:var(--brand-secondary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">6 PM</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end;">
+                <span style="font-size:10px; color:var(--brand-primary); font-weight:700;">3 mph</span>
+                <div style="width:24px; height:28px; background:var(--brand-primary); border-radius:4px 4px 0 0;"></div>
+                <span style="font-size:10px; color:var(--text-secondary);">9 PM</span>
+              </div>
+            </div>
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Green bars mark safe drift-free organic spray windows (< 6 mph).</p>
+          </div>
+        </div>
+
+        <!-- Soil Depth Profiles Panel (Hidden by default) -->
+        <div id="forecast-soil-depth" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="agro-card">
+            <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Multi-Depth Thermal Profile</span>
+            <div class="metric-grid-4" style="margin-top:6px;">
+              <div class="metric-tile">
+                <span class="metric-label">Surface (0")</span>
+                <div class="metric-value">62°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">High fluctuation</span>
+              </div>
+              <div class="metric-tile" style="border-color:var(--brand-primary);">
+                <span class="metric-label">Seed Zone (2")</span>
+                <div class="metric-value" style="color:var(--brand-primary);">58°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Optimal cool crops</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Root Zone (6")</span>
+                <div class="metric-value">54°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Thermal inertia</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-label">Deep Tap (12")</span>
+                <div class="metric-value">51°<span class="metric-unit">F</span></div>
+                <span class="metric-desc">Stable baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Growing Degree Days (GDD) Metric -->
         <div class="agro-card">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg> Growing Degree Days (GDD)</span>
@@ -3602,23 +4057,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item active" data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -3742,23 +4197,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item active" data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -3792,7 +4247,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Log new pest sighting')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Select Organism</label><select class='input-field'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class='btn-primary' onclick='closeSheet(); showToast("✓ Pest sighting submitted to regional model");'>Submit to Regional Grid</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
         </div>
 
         <!-- Summary Bar -->
@@ -3867,23 +4322,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item active" data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -3933,16 +4388,16 @@ body.native-app-mode .dynamic-island {
 
         <!-- Crop Filter Pills -->
         <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
-          <button class="filter-pill active">All Crops (14)</button>
-          <button class="filter-pill" onclick="alert('Filtering Direct Sow')">Direct Sow</button>
-          <button class="filter-pill" onclick="alert('Filtering Indoor Trays')">Indoor Seed Flats</button>
-          <button class="filter-pill" onclick="alert('Filtering Outdoor Transplants')">Transplants</button>
+          <button class="filter-pill active" onclick="filterCrops('all', this)">All Crops (14)</button>
+          <button class="filter-pill" onclick="filterCrops('direct', this)">Direct Sow</button>
+          <button class="filter-pill" onclick="filterCrops('indoor', this)">Indoor Flats</button>
+          <button class="filter-pill" onclick="filterCrops('transplant', this)">Transplants</button>
         </div>
 
         <!-- Crop Cards -->
         <div style="display:flex; flex-direction:column; gap:8px;">
           <!-- Crop 1 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="direct" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sugar Snap Peas (Oregon Giant)</div>
@@ -3956,7 +4411,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 2 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">San Marzano Heirloom Tomatoes</div>
@@ -3970,7 +4425,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 3 -->
-          <div class="agro-card" style="padding:12px 14px;">
+          <div class="agro-card crop-card-item" data-crop-type="transplant" style="padding:12px 14px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Lacinato Dinosaur Kale</div>
@@ -3981,7 +4436,7 @@ body.native-app-mode .dynamic-island {
           </div>
 
           <!-- Crop 4: Warning -->
-          <div class="agro-card" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
+          <div class="agro-card crop-card-item" data-crop-type="indoor" style="padding:12px 14px; border-left:4px solid var(--accent-urgent);">
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <div>
                 <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Sweet Genovese Basil</div>
@@ -3997,23 +4452,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4133,23 +4588,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item active" data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4183,7 +4638,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="alert('Adding new bed')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Bed Name</label><input type='text' class='input-field' value='Bed 5 • Heirloom Cucurbits' /><button class='btn-primary' onclick='closeSheet(); showToast("✓ Bed 5 created with sensor mapping");'>Save Plot</button></div>')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -4258,23 +4713,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4375,23 +4830,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item active" data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item " data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4425,7 +4880,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="alert('Post your own field observation')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Your Observation</label><textarea class='input-field' rows='3' placeholder='Report blooms, insects, or frost spots...'></textarea><button class='btn-primary' onclick='closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");'>Publish to Network</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         </div>
 
         <!-- Filter Tabs -->
@@ -4502,23 +4957,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item active" data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4610,7 +5065,7 @@ body.native-app-mode .dynamic-island {
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="alert('Pairing new Bluetooth probe')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style='text-align:center; padding:16px;'><div style='font-size:24px; margin-bottom:8px;'>📡</div><div style='font-weight:700;'>Scanning for BLE 5.0 Soil Probes...</div><p style='font-size:12px; color:var(--text-secondary); margin:6px 0 12px;'>Hold probe button for 3 seconds.</p><button class='btn-primary' onclick='closeSheet(); showToast("✓ Soil Probe #02 paired successfully");'>Simulate Pair</button></div>')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -4643,16 +5098,16 @@ body.native-app-mode .dynamic-island {
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0;">
             <span style="font-size:13px; color:var(--text-primary);">Temperature Scale</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">°F</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Celsius')">°C</button>
+              <button class="seg-btn active" data-unit-toggle="imperial" style="padding:2px 8px; font-size:11px;" onclick="setUnits('imperial')">°F</button>
+              <button class="seg-btn" data-unit-toggle="metric" style="padding:2px 8px; font-size:11px;" onclick="setUnits('metric')">°C</button>
             </div>
           </div>
 
           <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-top:1px solid var(--border-subtle);">
             <span style="font-size:13px; color:var(--text-primary);">Precipitation Units</span>
             <div class="segmented-ctl">
-              <button class="seg-btn active" style="padding:2px 8px; font-size:11px;">Inches</button>
-              <button class="seg-btn" style="padding:2px 8px; font-size:11px;" onclick="alert('Switched to Millimeters')">mm</button>
+              <button class="seg-btn active" data-rain-toggle="in" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Inches')">Inches</button>
+              <button class="seg-btn" data-rain-toggle="mm" style="padding:2px 8px; font-size:11px;" onclick="showToast('Precipitation units set to Millimeters (mm)')">mm</button>
             </div>
           </div>
 
@@ -4667,23 +5122,23 @@ body.native-app-mode .dynamic-island {
       </div>
       
   <nav class="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item " onclick="navigateToScreen(2)" title="Today's Overview">
+    <button class="tab-item " data-tab="today" onclick="navigateToScreen(2, 'tab')" title="Today's Overview">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4.1.9-4.9 2z"/></svg>
       <span>Today</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(3)" title="Hyperlocal Forecast">
+    <button class="tab-item " data-tab="weather" onclick="navigateToScreen(3, 'tab')" title="Hyperlocal Forecast">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
       <span>Weather</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(8)" title="My Plots & Beds">
+    <button class="tab-item " data-tab="plots" onclick="navigateToScreen(8, 'tab')" title="My Plots & Beds">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
       <span>Plots</span>
     </button>
-    <button class="tab-item " onclick="navigateToScreen(7)" title="Frost & Risk Hub">
+    <button class="tab-item " data-tab="alerts" onclick="navigateToScreen(7, 'tab')" title="Frost & Risk Hub">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Alerts</span>
     </button>
-    <button class="tab-item active" onclick="navigateToScreen(11)" title="Settings & Appearance">
+    <button class="tab-item active" data-tab="profile" onclick="navigateToScreen(11, 'tab')" title="Settings & Appearance">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Profile</span>
     </button>
@@ -4748,7 +5203,7 @@ body.native-app-mode .dynamic-island {
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="alert('Regional Frost Bulletin Editor opened')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style='display:flex; flex-direction:column; gap:8px;'><div style='font-weight:700; color:var(--accent-urgent);'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class='input-field' rows='3'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class='btn-primary' style='background:var(--accent-urgent);' onclick='closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");'>Transmit Emergency Alert</button></div>')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 20-1.25-2.5L6 18M14 20l1.25-2.5L18 18M10 4l-1.25 2.5L6 6M14 4l1.25 2.5L18 6M2 12h20M12 2v20M20 10l-2.5 1.25L18 14M4 10l2.5 1.25L6 14"/></svg> Broadcast Regional Frost Bulletin
           </button>
           <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">
@@ -4829,9 +5284,11 @@ body.native-app-mode .dynamic-island {
   // State management
   let currentTheme = 'light';
   let currentViewMode = 'grid'; // 'grid' | 'proto'
-  let currentScreenId = 2; // Default to Screen 2 (Today's Dashboard)
+  let currentScreenId = 2; // Default to Screen 2
+  let previousScreenId = 2;
   let currentZoom = 100;
   let currentFilter = 'all';
+  let currentUnits = 'imperial'; // 'imperial' | 'metric'
 
   const screensData = [
     { id: 1, title: "Onboarding & Microclimate Setup", persona: "home market", role: "Primary: Home & Market Growers" },
@@ -4857,14 +5314,12 @@ body.native-app-mode .dynamic-island {
       document.documentElement.removeAttribute('data-theme');
     }
 
-    // Update Top Presentation Bar Toggle Button
     const topBtn = document.getElementById('top-theme-btn');
     const topText = document.getElementById('top-theme-text');
     if (topText) {
       topText.textContent = theme === 'dark' ? 'Dark: Evening Loam & Moss' : 'Light: Warm Harvest & Soil';
     }
 
-    // Update Screen 11 Toggles (if present in DOM)
     const s11Light = document.getElementById('s11-btn-light');
     const s11Dark = document.getElementById('s11-btn-dark');
     const s11Status = document.getElementById('screen11-theme-status');
@@ -4880,7 +5335,6 @@ body.native-app-mode .dynamic-island {
       }
     }
 
-    // Sync all duplicated instances across grid and prototype views
     document.querySelectorAll('[data-sync-theme]').forEach(el => {
       const mode = el.getAttribute('data-sync-theme');
       if (mode === theme) {
@@ -4893,6 +5347,7 @@ body.native-app-mode .dynamic-island {
 
   function toggleGlobalTheme() {
     setTheme(currentTheme === 'light' ? 'dark' : 'light');
+    showToast(currentTheme === 'dark' ? '🌙 Dark Mode Activated' : '☀️ Light Mode Activated');
   }
 
   // View Mode Switching
@@ -4916,40 +5371,86 @@ body.native-app-mode .dynamic-island {
       gridView.classList.add('hidden');
       protoView.classList.remove('hidden');
       if (subBar) subBar.classList.add('hidden');
-      renderProtoScreen(currentScreenId);
+      renderProtoScreen(currentScreenId, 'tab');
     }
   }
 
-  // Prototype Screen Navigation
-  function navigateToScreen(screenId) {
+  // Prototype Screen Navigation with Directional Transition
+  function navigateToScreen(screenId, transType = null) {
+    previousScreenId = currentScreenId;
     currentScreenId = screenId;
+
     if (currentViewMode !== 'proto') {
       setViewMode('proto');
     }
-    renderProtoScreen(screenId);
+
+    // Determine animation type if not explicitly set
+    if (!transType) {
+      if (screenId > previousScreenId) {
+        transType = 'forward';
+      } else if (screenId < previousScreenId) {
+        transType = 'back';
+      } else {
+        transType = 'tab';
+      }
+    }
+
+    renderProtoScreen(screenId, transType);
   }
 
-  function renderProtoScreen(screenId) {
-    currentScreenId = screenId;
+  function renderProtoScreen(screenId, transType = 'tab') {
     const select = document.getElementById('proto-screen-select');
     if (select) select.value = screenId;
 
     const counter = document.getElementById('proto-screen-counter');
     const screenMeta = screensData.find(s => s.id === screenId);
     if (counter && screenMeta) {
-      counter.textContent = "Screen " + screenId + " of 12 • " + screenMeta.title;
+      counter.textContent = "Screen " + String(screenId).padStart(2, '0') + " of 12 • " + screenMeta.title;
     }
 
-    // Hide all prototype screens and show active
+    // Hide all prototype screens and apply transition to target
     document.querySelectorAll('.proto-screen-content').forEach(el => {
-      if (parseInt(el.getAttribute('data-screen-id')) === screenId) {
+      const elId = parseInt(el.getAttribute('data-screen-id'));
+      if (elId === screenId) {
         el.classList.remove('hidden');
+
+        // Apply directional animation class
+        el.classList.remove('anim-slide-right', 'anim-slide-left', 'anim-tab-fade');
+        void el.offsetWidth; // Force CSS reflow
+
+        if (transType === 'forward') {
+          el.classList.add('anim-slide-right');
+        } else if (transType === 'back') {
+          el.classList.add('anim-slide-left');
+        } else {
+          el.classList.add('anim-tab-fade');
+        }
       } else {
         el.classList.add('hidden');
       }
     });
 
-    // Make sure theme toggle in screen 11 is synced
+    // Update active state in bottom tabs of the active screen
+    const activeScreenEl = document.querySelector('.proto-screen-content[data-screen-id="' + screenId + '"]');
+    if (activeScreenEl) {
+      const tabMap = { 2: 'today', 3: 'weather', 8: 'plots', 7: 'alerts', 11: 'profile' };
+      const currentTab = tabMap[screenId];
+      if (currentTab) {
+        activeScreenEl.querySelectorAll('.tab-item').forEach(tab => {
+          tab.classList.remove('active');
+          if (tab.getAttribute('data-tab') === currentTab) {
+            tab.classList.add('active', 'tab-popped');
+            setTimeout(() => tab.classList.remove('tab-popped'), 400);
+          }
+        });
+      }
+    }
+
+    // Scroll viewport to top smoothly
+    const viewport = activeScreenEl ? activeScreenEl.querySelector('.mobile-viewport') : null;
+    if (viewport) viewport.scrollTop = 0;
+
+    // Theme sync for Screen 11
     if (screenId === 11) {
       setTheme(currentTheme);
     }
@@ -4959,7 +5460,7 @@ body.native-app-mode .dynamic-island {
     let next = currentScreenId + dir;
     if (next < 1) next = 12;
     if (next > 12) next = 1;
-    renderProtoScreen(next);
+    navigateToScreen(next, dir > 0 ? 'forward' : 'back');
   }
 
   // Zoom Controls
@@ -4992,25 +5493,139 @@ body.native-app-mode .dynamic-island {
     });
   }
 
-  // Interactive Checklist Toggler
-  
+  // Native Fullscreen Mode
   function toggleNativeMode() {
     document.body.classList.toggle('native-app-mode');
-  }
-
-  function toggleChecklist(el) {
-    el.classList.toggle('checked');
-    const box = el.querySelector('.check-box');
-    if (box) {
-      if (el.classList.contains('checked')) {
-        box.style.color = 'var(--text-on-brand)';
-      } else {
-        box.style.color = 'transparent';
-      }
+    if (document.body.classList.contains('native-app-mode')) {
+      showToast('📱 Native App Mode (Edge-to-Edge)');
     }
   }
 
-  // Initialize on Load
+  // Checklist Item Tap Physics
+  function toggleChecklist(el) {
+    el.classList.toggle('checked');
+    el.classList.add('just-checked');
+    setTimeout(() => el.classList.remove('just-checked'), 400);
+
+    const isChecked = el.classList.contains('checked');
+    const label = el.querySelector('.check-text') ? el.querySelector('.check-text').textContent : 'Task';
+    showToast(isChecked ? '✓ Completed: ' + label.slice(0, 26) + '...' : '○ Restored: ' + label.slice(0, 26));
+  }
+
+  // Interactive Hourly Weather Strip
+  function selectHour(el, tempF, label) {
+    const parent = el.closest('.agro-strip');
+    if (parent) {
+      parent.querySelectorAll('.strip-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+    const tempHero = document.getElementById('hero-temp-display');
+    if (tempHero) {
+      const displayTemp = currentUnits === 'metric' ? Math.round((tempF - 32) * 5/9) + '°C' : tempF + '°F';
+      tempHero.innerHTML = displayTemp;
+    }
+    showToast(label + ' Forecast: ' + (currentUnits === 'metric' ? Math.round((tempF - 32) * 5/9) + '°C' : tempF + '°F'));
+  }
+
+  // Screen 3: Interactive Forecast Tab Switcher
+  function switchForecastSubTab(tabName, btn) {
+    const parent = btn.closest('.segmented-ctl');
+    if (parent) {
+      parent.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    const container7Day = document.getElementById('forecast-7day-list');
+    const containerHourly = document.getElementById('forecast-hourly-chart');
+    const containerSoil = document.getElementById('forecast-soil-depth');
+
+    if (container7Day) container7Day.classList.add('hidden');
+    if (containerHourly) containerHourly.classList.add('hidden');
+    if (containerSoil) containerSoil.classList.add('hidden');
+
+    if (tabName === '7day' && container7Day) {
+      container7Day.classList.remove('hidden');
+      container7Day.classList.add('anim-tab-fade');
+    } else if (tabName === 'hourly' && containerHourly) {
+      containerHourly.classList.remove('hidden');
+      containerHourly.classList.add('anim-tab-fade');
+    } else if (tabName === 'soil' && containerSoil) {
+      containerSoil.classList.remove('hidden');
+      containerSoil.classList.add('anim-tab-fade');
+    }
+  }
+
+  // Screen 6: Interactive Crop Filter Pills
+  function filterCrops(category, btn) {
+    const parent = btn.parentElement;
+    if (parent) {
+      parent.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    document.querySelectorAll('.crop-card-item').forEach(card => {
+      const cat = card.getAttribute('data-crop-type') || '';
+      if (category === 'all' || cat.includes(category)) {
+        card.style.display = 'flex';
+        card.classList.add('anim-tab-fade');
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Unit Converter (°F ↔ °C, in ↔ mm)
+  function setUnits(unitType) {
+    currentUnits = unitType;
+    document.querySelectorAll('[data-unit-f]').forEach(el => {
+      const f = parseFloat(el.getAttribute('data-unit-f'));
+      if (unitType === 'metric') {
+        const c = Math.round((f - 32) * 5 / 9);
+        el.textContent = c + '°C';
+      } else {
+        el.textContent = f + '°F';
+      }
+    });
+
+    document.querySelectorAll('[data-unit-toggle]').forEach(b => {
+      b.classList.remove('active');
+      if (b.getAttribute('data-unit-toggle') === unitType) b.classList.add('active');
+    });
+
+    showToast('Measurement units set to ' + (unitType === 'metric' ? 'Metric (°C / mm)' : 'Imperial (°F / in)'));
+  }
+
+  // Modal Sheet & Toasts
+  function openSheet(title, htmlContent) {
+    const sheet = document.getElementById('app-modal-sheet');
+    const titleEl = document.getElementById('modal-sheet-title');
+    const bodyEl = document.getElementById('modal-sheet-body');
+    if (sheet && titleEl && bodyEl) {
+      titleEl.textContent = title;
+      bodyEl.innerHTML = htmlContent;
+      sheet.classList.add('active');
+    }
+  }
+
+  function closeSheet() {
+    const sheet = document.getElementById('app-modal-sheet');
+    if (sheet) sheet.classList.remove('active');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('app-toast');
+    const toastMsg = document.getElementById('toast-msg');
+    if (toast && toastMsg) {
+      toastMsg.textContent = msg;
+      toast.classList.add('active');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2400);
+    }
+  }
+
+  // Auto-detect mobile devices on load
   window.addEventListener('DOMContentLoaded', () => {
     setTheme('light');
     if (window.innerWidth <= 768) {

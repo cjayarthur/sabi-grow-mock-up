@@ -1177,6 +1177,163 @@ body.native-app-mode .dynamic-island {
   }
 }
 
+
+/* ==========================================================================
+   High-Fidelity Interactive Screen Transitions & Micro-Interactions
+   ========================================================================== */
+
+/* Directional Screen Entry Animations */
+@keyframes screenSlideInRight {
+  0% { transform: translateX(36px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes screenSlideInLeft {
+  0% { transform: translateX(-36px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes screenTabCrossFade {
+  0% { transform: scale(0.975); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-slide-right {
+  animation: screenSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-slide-left {
+  animation: screenSlideInLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-tab-fade {
+  animation: screenTabCrossFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Micro-Interactions & Tap Physics */
+.agro-card, .metric-tile, .alert-box-urgent, .alert-box-warning, .alert-box-rain, .checklist-item, .strip-item, .filter-pill, .seg-btn, .btn-primary, .btn-secondary, .icon-action-btn, .tab-item {
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.agro-card:active, .metric-tile:active, .checklist-item:active, .strip-item:active {
+  transform: scale(0.975);
+}
+
+.btn-primary:active, .btn-secondary:active, .icon-action-btn:active, .filter-pill:active {
+  transform: scale(0.94);
+}
+
+/* Tab Bar Bouncy Icon Spring */
+.tab-item:active svg {
+  transform: scale(0.82);
+}
+
+.tab-item.tab-popped svg {
+  animation: tabSpringPop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes tabSpringPop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.26); }
+  100% { transform: scale(1); }
+}
+
+/* Checkbox Pop Animation */
+.checklist-item.just-checked .check-box {
+  animation: checkboxPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes checkboxPop {
+  0% { transform: scale(0.7); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Slide-Up Bottom Sheet Modal */
+.modal-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.26s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-sheet-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-sheet-content {
+  width: 100%;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 28px 28px 0 0;
+  padding: 12px 20px 32px;
+  box-shadow: 0 -12px 36px rgba(0,0,0,0.25);
+  transform: translateY(100%);
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 82%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-sheet-backdrop.active .modal-sheet-content {
+  transform: translateY(0);
+}
+
+.modal-drag-handle {
+  width: 38px;
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  margin: 0 auto 4px;
+}
+
+.modal-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Floating Toast Notification */
+.app-toast {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+  background: var(--brand-primary);
+  color: var(--text-on-brand);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-lg);
+  z-index: 850;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.app-toast.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
 /* Hide helper */
 .hidden {
   display: none !important;
