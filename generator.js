@@ -186,12 +186,12 @@ function buildHtml() {
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->
     <div class="mobile-frame" id="interactive-phone-frame">
       <!-- Slide-Up Bottom Sheet Modal Component -->
-      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeSheet()">
+      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeModalSheet()">
         <div class="modal-sheet-content" onclick="event.stopPropagation()">
           <div class="modal-drag-handle"></div>
           <div class="modal-sheet-header">
             <h3 id="modal-sheet-title" style="font-size:15px; font-weight:800; color:var(--text-primary);">Details</h3>
-            <button class="icon-action-btn" onclick="closeSheet()" style="width:28px; height:28px;">✕</button>
+            <button class="icon-action-btn" onclick="closeModalSheet()" style="width:28px; height:28px;">✕</button>
           </div>
           <div id="modal-sheet-body"></div>
         </div>

@@ -154,7 +154,7 @@ const screens = [
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class=\'alert-box-urgent\'><strong>Light Freeze Watch</strong><p style=\'font-size:12px;\'>Friday 3:30 AM (29°F). Protection required.</p><button class=\'btn-primary\' style=\'margin-top:8px; padding:8px;\' onclick=\'closeSheet(); navigateToScreen(7);\'>View Mitigation Checklist →</button></div>')" title="Alerts">
+          <div class="icon-action-btn" onclick="openModalSheet('alerts')" title="Alerts">
             ${icons.bell('w-4 h-4')}
             <span class="badge-dot-alert"></span>
           </div>
@@ -323,7 +323,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style=\'background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;\'><div style=\'font-size:14px; font-weight:700; color:var(--accent-rain);\'>🌧️ Rain Reflectivity Scan (85km)</div><p style=\'font-size:12px; margin-top:6px;\'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')">${icons.cloudRain('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openModalSheet('radar')">${icons.cloudRain('w-4 h-4')}</div>
         </div>
 
         <!-- Segmented Tab Toggle -->
@@ -722,7 +722,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Select Organism</label><select class=\'input-field\'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Pest sighting submitted to regional model");\'>Submit to Regional Grid</button></div>')">${icons.bug('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openModalSheet('pest')">${icons.bug('w-4 h-4')}</div>
         </div>
 
         <!-- Summary Bar -->
@@ -1017,7 +1017,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Bed Name</label><input type=\'text\' class=\'input-field\' value=\'Bed 5 • Heirloom Cucurbits\' /><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Bed 5 created with sensor mapping");\'>Save Plot</button></div>')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openModalSheet('add_bed')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -1195,7 +1195,7 @@ const screens = [
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><label class=\'input-label\'>Your Observation</label><textarea class=\'input-field\' rows=\'3\' placeholder=\'Report blooms, insects, or frost spots...\'></textarea><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");\'>Publish to Network</button></div>')">${icons.users('w-4 h-4')}</div>
+          <div class="icon-action-btn" onclick="openModalSheet('share_note')">${icons.users('w-4 h-4')}</div>
         </div>
 
         <!-- Filter Tabs -->
@@ -1349,7 +1349,7 @@ const screens = [
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title">${icons.wifi('w-4 h-4')} Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style=\'text-align:center; padding:16px;\'><div style=\'font-size:24px; margin-bottom:8px;\'>📡</div><div style=\'font-weight:700;\'>Scanning for BLE 5.0 Soil Probes...</div><p style=\'font-size:12px; color:var(--text-secondary); margin:6px 0 12px;\'>Hold probe button for 3 seconds.</p><button class=\'btn-primary\' onclick=\'closeSheet(); showToast("✓ Soil Probe #02 paired successfully");\'>Simulate Pair</button></div>')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openModalSheet('pair_probe')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -1456,10 +1456,10 @@ const screens = [
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style=\'display:flex; flex-direction:column; gap:8px;\'><div style=\'font-weight:700; color:var(--accent-urgent);\'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class=\'input-field\' rows=\'3\'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class=\'btn-primary\' style=\'background:var(--accent-urgent);\' onclick=\'closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");\'>Transmit Emergency Alert</button></div>')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openModalSheet('broadcast')">
             ${icons.frost('w-4 h-4')} Broadcast Regional Frost Bulletin
           </button>
-          <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">
+          <button class="btn-secondary" onclick="openModalSheet('pest')">
             ${icons.bug('w-4 h-4')} Calibrate Disease Degree-Day Model
           </button>
         </div>

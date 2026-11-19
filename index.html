@@ -1258,23 +1258,21 @@ body.native-app-mode .dynamic-island {
 
 /* Slide-Up Bottom Sheet Modal */
 .modal-sheet-backdrop {
+  display: none !important;
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.52);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 700;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.26s ease;
-  display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
 .modal-sheet-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .modal-sheet-content {
@@ -1315,8 +1313,9 @@ body.native-app-mode .dynamic-island {
 
 /* Floating Toast Notification */
 .app-toast {
+  display: none !important;
   position: absolute;
-  top: 50px;
+  top: 52px;
   left: 50%;
   transform: translateX(-50%) translateY(-24px);
   background: var(--brand-primary);
@@ -1330,15 +1329,15 @@ body.native-app-mode .dynamic-island {
   opacity: 0;
   pointer-events: none;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
-  display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
 }
 
 .app-toast.active {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
+  display: flex !important;
+  transform: translateX(-50%) translateY(0) !important;
+  opacity: 1 !important;
 }
 
 /* Hide helper */
@@ -1581,7 +1580,7 @@ body.native-app-mode .dynamic-island {
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class='alert-box-urgent'><strong>Light Freeze Watch</strong><p style='font-size:12px;'>Friday 3:30 AM (29°F). Protection required.</p><button class='btn-primary' style='margin-top:8px; padding:8px;' onclick='closeSheet(); navigateToScreen(7);'>View Mitigation Checklist →</button></div>')" title="Alerts">
+          <div class="icon-action-btn" onclick="openModalSheet('alerts')" title="Alerts">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
             <span class="badge-dot-alert"></span>
           </div>
@@ -1794,7 +1793,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style='background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;'><div style='font-size:14px; font-weight:700; color:var(--accent-rain);'>🌧️ Rain Reflectivity Scan (85km)</div><p style='font-size:12px; margin-top:6px;'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('radar')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
         </div>
 
         <!-- Segmented Tab Toggle -->
@@ -2281,7 +2280,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Select Organism</label><select class='input-field'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class='btn-primary' onclick='closeSheet(); showToast("✓ Pest sighting submitted to regional model");'>Submit to Regional Grid</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('pest')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
         </div>
 
         <!-- Summary Bar -->
@@ -2708,7 +2707,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Bed Name</label><input type='text' class='input-field' value='Bed 5 • Heirloom Cucurbits' /><button class='btn-primary' onclick='closeSheet(); showToast("✓ Bed 5 created with sensor mapping");'>Save Plot</button></div>')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openModalSheet('add_bed')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -2974,7 +2973,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Your Observation</label><textarea class='input-field' rows='3' placeholder='Report blooms, insects, or frost spots...'></textarea><button class='btn-primary' onclick='closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");'>Publish to Network</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('share_note')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         </div>
 
         <!-- Filter Tabs -->
@@ -3171,7 +3170,7 @@ body.native-app-mode .dynamic-island {
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style='text-align:center; padding:16px;'><div style='font-size:24px; margin-bottom:8px;'>📡</div><div style='font-weight:700;'>Scanning for BLE 5.0 Soil Probes...</div><p style='font-size:12px; color:var(--text-secondary); margin:6px 0 12px;'>Hold probe button for 3 seconds.</p><button class='btn-primary' onclick='closeSheet(); showToast("✓ Soil Probe #02 paired successfully");'>Simulate Pair</button></div>')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openModalSheet('pair_probe')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -3321,10 +3320,10 @@ body.native-app-mode .dynamic-island {
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style='display:flex; flex-direction:column; gap:8px;'><div style='font-weight:700; color:var(--accent-urgent);'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class='input-field' rows='3'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class='btn-primary' style='background:var(--accent-urgent);' onclick='closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");'>Transmit Emergency Alert</button></div>')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openModalSheet('broadcast')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 20-1.25-2.5L6 18M14 20l1.25-2.5L18 18M10 4l-1.25 2.5L6 6M14 4l1.25 2.5L18 6M2 12h20M12 2v20M20 10l-2.5 1.25L18 14M4 10l2.5 1.25L6 14"/></svg> Broadcast Regional Frost Bulletin
           </button>
-          <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">
+          <button class="btn-secondary" onclick="openModalSheet('pest')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg> Calibrate Disease Degree-Day Model
           </button>
         </div>
@@ -3438,12 +3437,12 @@ body.native-app-mode .dynamic-island {
     <!-- Realistic iPhone 15 Pro Frame Container (390x844px) -->
     <div class="mobile-frame" id="interactive-phone-frame">
       <!-- Slide-Up Bottom Sheet Modal Component -->
-      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeSheet()">
+      <div class="modal-sheet-backdrop" id="app-modal-sheet" onclick="closeModalSheet()">
         <div class="modal-sheet-content" onclick="event.stopPropagation()">
           <div class="modal-drag-handle"></div>
           <div class="modal-sheet-header">
             <h3 id="modal-sheet-title" style="font-size:15px; font-weight:800; color:var(--text-primary);">Details</h3>
-            <button class="icon-action-btn" onclick="closeSheet()" style="width:28px; height:28px;">✕</button>
+            <button class="icon-action-btn" onclick="closeModalSheet()" style="width:28px; height:28px;">✕</button>
           </div>
           <div id="modal-sheet-body"></div>
         </div>
@@ -3583,7 +3582,7 @@ body.native-app-mode .dynamic-island {
               <span>Sonoma Zone 9b • Synced 4m ago</span>
             </div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Active Weather Alerts', '<div class='alert-box-urgent'><strong>Light Freeze Watch</strong><p style='font-size:12px;'>Friday 3:30 AM (29°F). Protection required.</p><button class='btn-primary' style='margin-top:8px; padding:8px;' onclick='closeSheet(); navigateToScreen(7);'>View Mitigation Checklist →</button></div>')" title="Alerts">
+          <div class="icon-action-btn" onclick="openModalSheet('alerts')" title="Alerts">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
             <span class="badge-dot-alert"></span>
           </div>
@@ -3784,7 +3783,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Micro-Forecast & Indices</h2>
             <div class="header-subtag">Sonoma Valley Station #04 • Slope Adjusted</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Precipitation Radar', '<div style='background:var(--bg-elevated); padding:24px; border-radius:12px; text-align:center;'><div style='font-size:14px; font-weight:700; color:var(--accent-rain);'>🌧️ Rain Reflectivity Scan (85km)</div><p style='font-size:12px; margin-top:6px;'>Approaching storm front: 14mm deposit expected Saturday 2:00 PM.</p></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('radar')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></div>
         </div>
 
         <!-- Segmented Tab Toggle -->
@@ -4247,7 +4246,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Pest & Disease Pressure</h2>
             <div class="header-subtag">Microclimate Pathogen Models • 3 Active Signals</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Log Field Pest Sighting', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Select Organism</label><select class='input-field'><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Aphid Colony</option></select><button class='btn-primary' onclick='closeSheet(); showToast("✓ Pest sighting submitted to regional model");'>Submit to Regional Grid</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('pest')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg></div>
         </div>
 
         <!-- Summary Bar -->
@@ -4638,7 +4637,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Garden Plots & Microzones</h2>
             <div class="header-subtag">4 Cultivated Zones • 18 Crop Varieties</div>
           </div>
-          <button class="screen-meta-btn" onclick="openSheet('Add New Cultivation Bed', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Bed Name</label><input type='text' class='input-field' value='Bed 5 • Heirloom Cucurbits' /><button class='btn-primary' onclick='closeSheet(); showToast("✓ Bed 5 created with sensor mapping");'>Save Plot</button></div>')">+ Add Bed</button>
+          <button class="screen-meta-btn" onclick="openModalSheet('add_bed')">+ Add Bed</button>
         </div>
 
         <!-- Overall Health Stat Card -->
@@ -4880,7 +4879,7 @@ body.native-app-mode .dynamic-island {
             <h2 style="font-size:18px; font-weight:800; color:var(--text-primary);">Regional Field Network</h2>
             <div class="header-subtag">Within 15 Miles • Sonoma & Russian River</div>
           </div>
-          <div class="icon-action-btn" onclick="openSheet('Share Regional Field Observation', '<div style='display:flex; flex-direction:column; gap:8px;'><label class='input-label'>Your Observation</label><textarea class='input-field' rows='3' placeholder='Report blooms, insects, or frost spots...'></textarea><button class='btn-primary' onclick='closeSheet(); showToast("✓ Field note broadcasted to 15-mile radius");'>Publish to Network</button></div>')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="icon-action-btn" onclick="openModalSheet('share_note')"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         </div>
 
         <!-- Filter Tabs -->
@@ -5065,7 +5064,7 @@ body.native-app-mode .dynamic-island {
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div class="card-header-row">
             <span class="card-title"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Connected Sensors</span>
-            <button class="screen-meta-btn" onclick="openSheet('Bluetooth Sensor Pairing', '<div style='text-align:center; padding:16px;'><div style='font-size:24px; margin-bottom:8px;'>📡</div><div style='font-weight:700;'>Scanning for BLE 5.0 Soil Probes...</div><p style='font-size:12px; color:var(--text-secondary); margin:6px 0 12px;'>Hold probe button for 3 seconds.</p><button class='btn-primary' onclick='closeSheet(); showToast("✓ Soil Probe #02 paired successfully");'>Simulate Pair</button></div>')">+ Pair Probe</button>
+            <button class="screen-meta-btn" onclick="openModalSheet('pair_probe')">+ Pair Probe</button>
           </div>
 
           <div class="agro-card" style="padding:10px 14px;">
@@ -5203,10 +5202,10 @@ body.native-app-mode .dynamic-island {
 
         <!-- Quick Admin Action Buttons -->
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openSheet('Emergency Broadcast Console', '<div style='display:flex; flex-direction:column; gap:8px;'><div style='font-weight:700; color:var(--accent-urgent);'>Broadcast to Zone 9a-10b (1,420 growers)</div><textarea class='input-field' rows='3'>Freeze advisory: Friday 03:30 AM drop to 29°F. Apply floating row covers.</textarea><button class='btn-primary' style='background:var(--accent-urgent);' onclick='closeSheet(); showToast("📢 Freeze bulletin broadcasted to 1,420 stations");'>Transmit Emergency Alert</button></div>')">
+          <button class="btn-primary" style="background:var(--accent-urgent);" onclick="openModalSheet('broadcast')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 20-1.25-2.5L6 18M14 20l1.25-2.5L18 18M10 4l-1.25 2.5L6 6M14 4l1.25 2.5L18 6M2 12h20M12 2v20M20 10l-2.5 1.25L18 14M4 10l2.5 1.25L6 14"/></svg> Broadcast Regional Frost Bulletin
           </button>
-          <button class="btn-secondary" onclick="alert('Pest Degree-Day Threshold Editor opened')">
+          <button class="btn-secondary" onclick="openModalSheet('pest')">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4.168a3 3 0 0 0-4 0M14 4.168a3 3 0 0 1 4 0"/></svg> Calibrate Disease Degree-Day Model
           </button>
         </div>
@@ -5281,14 +5280,13 @@ body.native-app-mode .dynamic-island {
 
   
 <script>
-  // State management
   let currentTheme = 'light';
-  let currentViewMode = 'grid'; // 'grid' | 'proto'
-  let currentScreenId = 2; // Default to Screen 2
+  let currentViewMode = 'grid';
+  let currentScreenId = 2;
   let previousScreenId = 2;
   let currentZoom = 100;
   let currentFilter = 'all';
-  let currentUnits = 'imperial'; // 'imperial' | 'metric'
+  let currentUnits = 'imperial';
 
   const screensData = [
     { id: 1, title: "Onboarding & Microclimate Setup", persona: "home market", role: "Primary: Home & Market Growers" },
@@ -5305,152 +5303,203 @@ body.native-app-mode .dynamic-island {
     { id: 12, title: "Admin Agronomic Console", persona: "admin", role: "Support Role: Authorised Admin" }
   ];
 
-  // Theme Switching
+  const sheetData = {
+    alerts: {
+      title: "Active Weather Alerts",
+      html: '<div class="alert-box-urgent"><strong>Light Freeze Watch</strong><p style="font-size:12px; margin-top:4px;">Friday 03:30 AM (29°F). Pre-hydrate beds and secure row covers.</p><button class="btn-primary" style="margin-top:10px; padding:8px;" onclick="closeModalSheet(); navigateToScreen(7);">View Mitigation Protocol →</button></div>'
+    },
+    radar: {
+      title: "Precipitation Radar",
+      html: '<div style="background:var(--bg-elevated); padding:20px; border-radius:12px; text-align:center;"><div style="font-size:15px; font-weight:700; color:var(--accent-rain);">🌧️ Regional Storm Reflectivity (85km)</div><p style="font-size:12px; margin-top:6px; color:var(--text-secondary);">Approaching rain band: ~14mm (0.55 in) arriving Saturday afternoon.</p></div>'
+    },
+    pest: {
+      title: "Log Field Pest Sighting",
+      html: '<div style="display:flex; flex-direction:column; gap:10px;"><label class="input-label">Identified Pest / Disease</label><select class="input-field"><option>Crucifer Flea Beetle</option><option>Powdery Mildew Spores</option><option>Early Blight Lesions</option><option>Cabbage White Butterfly</option></select><button class="btn-primary" onclick="submitPestReport()">Submit Report</button></div>'
+    },
+    add_bed: {
+      title: "Add Cultivation Plot / Bed",
+      html: '<div style="display:flex; flex-direction:column; gap:10px;"><label class="input-label">Plot / Bed Name</label><input type="text" class="input-field" value="Bed 5 • Heirloom Cucurbits" /><label class="input-label">Microclimate Type</label><select class="input-field"><option>Raised Bed (Full Sun)</option><option>Inground Row (Terrace)</option><option>Polyhouse High Tunnel</option></select><button class="btn-primary" onclick="submitAddBed()">Save Bed</button></div>'
+    },
+    share_note: {
+      title: "Share Regional Field Note",
+      html: '<div style="display:flex; flex-direction:column; gap:10px;"><label class="input-label">Observation Details</label><textarea class="input-field" rows="3" placeholder="Report blooms, insect sightings, frost pockets..."></textarea><button class="btn-primary" onclick="submitShareNote()">Post Observation</button></div>'
+    },
+    pair_probe: {
+      title: "Bluetooth Sensor Pairing",
+      html: '<div style="text-align:center; padding:16px;"><div style="font-size:32px; margin-bottom:8px;">📡</div><div style="font-weight:700; font-size:14px;">Scanning for BLE 5.0 Soil Probes...</div><p style="font-size:12px; color:var(--text-secondary); margin:6px 0 14px;">Hold sensor pairing button for 3 seconds.</p><button class="btn-primary" onclick="submitPairProbe()">Simulate Pair</button></div>'
+    },
+    broadcast: {
+      title: "Emergency Agronomic Broadcast",
+      html: '<div style="display:flex; flex-direction:column; gap:10px;"><div style="font-size:12px; font-weight:700; color:var(--accent-urgent);">Target: Zone 9a-10b (1,420 Connected Stations)</div><textarea class="input-field" rows="3">Freeze Watch: Friday 03:30 AM drop to 29°F. Apply floating fleece covers immediately.</textarea><button class="btn-primary" style="background:var(--accent-urgent);" onclick="submitBroadcast()">Broadcast Alert</button></div>'
+    }
+  };
+
+  function submitPestReport() {
+    closeModalSheet();
+    showToast("✓ Sighting logged and broadcasted");
+  }
+
+  function submitAddBed() {
+    closeModalSheet();
+    showToast("✓ Bed 5 created successfully");
+  }
+
+  function submitShareNote() {
+    closeModalSheet();
+    showToast("✓ Field note shared with network");
+  }
+
+  function submitPairProbe() {
+    closeModalSheet();
+    showToast("✓ Soil Probe #02 paired successfully");
+  }
+
+  function submitBroadcast() {
+    closeModalSheet();
+    showToast("📢 Freeze advisory broadcasted to 1,420 stations");
+  }
+
+  function openModalSheet(type) {
+    const data = sheetData[type] || sheetData.alerts;
+    const sheet = document.getElementById("app-modal-sheet");
+    const titleEl = document.getElementById("modal-sheet-title");
+    const bodyEl = document.getElementById("modal-sheet-body");
+    if (sheet && titleEl && bodyEl) {
+      titleEl.textContent = data.title;
+      bodyEl.innerHTML = data.html;
+      sheet.classList.add("active");
+    }
+  }
+
+  function closeModalSheet() {
+    const sheet = document.getElementById("app-modal-sheet");
+    if (sheet) sheet.classList.remove("active");
+  }
+
   function setTheme(theme) {
     currentTheme = theme;
-    if (theme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
+    if (theme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
     } else {
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.removeAttribute("data-theme");
     }
 
-    const topBtn = document.getElementById('top-theme-btn');
-    const topText = document.getElementById('top-theme-text');
+    const topBtn = document.getElementById("top-theme-btn");
+    const topText = document.getElementById("top-theme-text");
     if (topText) {
-      topText.textContent = theme === 'dark' ? 'Dark: Evening Loam & Moss' : 'Light: Warm Harvest & Soil';
+      topText.textContent = theme === "dark" ? "Dark: Evening Loam & Moss" : "Light: Warm Harvest & Soil";
     }
 
-    const s11Light = document.getElementById('s11-btn-light');
-    const s11Dark = document.getElementById('s11-btn-dark');
-    const s11Status = document.getElementById('screen11-theme-status');
-    if (s11Light && s11Dark) {
-      if (theme === 'dark') {
-        s11Light.classList.remove('active');
-        s11Dark.classList.add('active');
-        if (s11Status) s11Status.textContent = 'Dark Mode';
+    document.querySelectorAll("#s11-btn-light, #s11-btn-dark").forEach(btn => {
+      const isDark = btn.id === "s11-btn-dark";
+      if ((isDark && theme === "dark") || (!isDark && theme === "light")) {
+        btn.classList.add("active");
       } else {
-        s11Dark.classList.remove('active');
-        s11Light.classList.add('active');
-        if (s11Status) s11Status.textContent = 'Light Mode';
+        btn.classList.remove("active");
       }
-    }
+    });
 
-    document.querySelectorAll('[data-sync-theme]').forEach(el => {
-      const mode = el.getAttribute('data-sync-theme');
-      if (mode === theme) {
-        el.classList.add('active');
-      } else {
-        el.classList.remove('active');
-      }
+    document.querySelectorAll("#screen11-theme-status").forEach(el => {
+      el.textContent = theme === "dark" ? "Dark Mode" : "Light Mode";
     });
   }
 
   function toggleGlobalTheme() {
-    setTheme(currentTheme === 'light' ? 'dark' : 'light');
-    showToast(currentTheme === 'dark' ? '🌙 Dark Mode Activated' : '☀️ Light Mode Activated');
+    setTheme(currentTheme === "light" ? "dark" : "light");
+    showToast(currentTheme === "dark" ? "🌙 Dark Mode Activated" : "☀️ Light Mode Activated");
   }
 
-  // View Mode Switching
   function setViewMode(mode) {
     currentViewMode = mode;
-    const gridBtn = document.getElementById('btn-mode-grid');
-    const protoBtn = document.getElementById('btn-mode-proto');
-    const gridView = document.getElementById('grid-view-container');
-    const protoView = document.getElementById('proto-view-container');
-    const subBar = document.getElementById('sub-filter-bar');
+    const gridBtn = document.getElementById("btn-mode-grid");
+    const protoBtn = document.getElementById("btn-mode-proto");
+    const gridView = document.getElementById("grid-view-container");
+    const protoView = document.getElementById("proto-view-container");
+    const subBar = document.getElementById("sub-filter-bar");
 
-    if (mode === 'grid') {
-      gridBtn.classList.add('active');
-      protoBtn.classList.remove('active');
-      gridView.classList.remove('hidden');
-      protoView.classList.add('hidden');
-      if (subBar) subBar.classList.remove('hidden');
+    if (mode === "grid") {
+      gridBtn.classList.add("active");
+      protoBtn.classList.remove("active");
+      gridView.classList.remove("hidden");
+      protoView.classList.add("hidden");
+      if (subBar) subBar.classList.remove("hidden");
     } else {
-      protoBtn.classList.add('active');
-      gridBtn.classList.remove('active');
-      gridView.classList.add('hidden');
-      protoView.classList.remove('hidden');
-      if (subBar) subBar.classList.add('hidden');
-      renderProtoScreen(currentScreenId, 'tab');
+      protoBtn.classList.add("active");
+      gridBtn.classList.remove("active");
+      gridView.classList.add("hidden");
+      protoView.classList.remove("hidden");
+      if (subBar) subBar.classList.add("hidden");
+      renderProtoScreen(currentScreenId, "tab");
     }
   }
 
-  // Prototype Screen Navigation with Directional Transition
-  function navigateToScreen(screenId, transType = null) {
+  function navigateToScreen(screenId, transType) {
     previousScreenId = currentScreenId;
     currentScreenId = screenId;
 
-    if (currentViewMode !== 'proto') {
-      setViewMode('proto');
+    if (currentViewMode !== "proto") {
+      setViewMode("proto");
     }
 
-    // Determine animation type if not explicitly set
     if (!transType) {
-      if (screenId > previousScreenId) {
-        transType = 'forward';
-      } else if (screenId < previousScreenId) {
-        transType = 'back';
-      } else {
-        transType = 'tab';
-      }
+      transType = screenId > previousScreenId ? "forward" : "back";
     }
 
     renderProtoScreen(screenId, transType);
   }
 
-  function renderProtoScreen(screenId, transType = 'tab') {
-    const select = document.getElementById('proto-screen-select');
+  function renderProtoScreen(screenId, transType) {
+    if (!transType) transType = "tab";
+    const select = document.getElementById("proto-screen-select");
     if (select) select.value = screenId;
 
-    const counter = document.getElementById('proto-screen-counter');
+    const counter = document.getElementById("proto-screen-counter");
     const screenMeta = screensData.find(s => s.id === screenId);
     if (counter && screenMeta) {
-      counter.textContent = "Screen " + String(screenId).padStart(2, '0') + " of 12 • " + screenMeta.title;
+      counter.textContent = "Screen " + String(screenId).padStart(2, "0") + " of 12 • " + screenMeta.title;
     }
 
-    // Hide all prototype screens and apply transition to target
-    document.querySelectorAll('.proto-screen-content').forEach(el => {
-      const elId = parseInt(el.getAttribute('data-screen-id'));
+    // Toggle active screen with animation
+    document.querySelectorAll(".proto-screen-content").forEach(el => {
+      const elId = parseInt(el.getAttribute("data-screen-id"));
       if (elId === screenId) {
-        el.classList.remove('hidden');
+        el.classList.remove("hidden");
+        el.style.display = "flex";
 
-        // Apply directional animation class
-        el.classList.remove('anim-slide-right', 'anim-slide-left', 'anim-tab-fade');
-        void el.offsetWidth; // Force CSS reflow
+        el.classList.remove("anim-slide-right", "anim-slide-left", "anim-tab-fade");
+        void el.offsetWidth;
 
-        if (transType === 'forward') {
-          el.classList.add('anim-slide-right');
-        } else if (transType === 'back') {
-          el.classList.add('anim-slide-left');
+        if (transType === "forward") {
+          el.classList.add("anim-slide-right");
+        } else if (transType === "back") {
+          el.classList.add("anim-slide-left");
         } else {
-          el.classList.add('anim-tab-fade');
+          el.classList.add("anim-tab-fade");
         }
       } else {
-        el.classList.add('hidden');
+        el.classList.add("hidden");
+        el.style.display = "none";
       }
     });
 
-    // Update active state in bottom tabs of the active screen
+    // Update active tab inside the active screen
     const activeScreenEl = document.querySelector('.proto-screen-content[data-screen-id="' + screenId + '"]');
     if (activeScreenEl) {
-      const tabMap = { 2: 'today', 3: 'weather', 8: 'plots', 7: 'alerts', 11: 'profile' };
+      const tabMap = { 2: "today", 3: "weather", 8: "plots", 7: "alerts", 11: "profile" };
       const currentTab = tabMap[screenId];
       if (currentTab) {
-        activeScreenEl.querySelectorAll('.tab-item').forEach(tab => {
-          tab.classList.remove('active');
-          if (tab.getAttribute('data-tab') === currentTab) {
-            tab.classList.add('active', 'tab-popped');
-            setTimeout(() => tab.classList.remove('tab-popped'), 400);
+        activeScreenEl.querySelectorAll(".tab-item").forEach(tab => {
+          tab.classList.remove("active");
+          if (tab.getAttribute("data-tab") === currentTab) {
+            tab.classList.add("active", "tab-popped");
+            setTimeout(() => tab.classList.remove("tab-popped"), 400);
           }
         });
       }
+      const viewport = activeScreenEl.querySelector(".mobile-viewport");
+      if (viewport) viewport.scrollTop = 0;
     }
 
-    // Scroll viewport to top smoothly
-    const viewport = activeScreenEl ? activeScreenEl.querySelector('.mobile-viewport') : null;
-    if (viewport) viewport.scrollTop = 0;
-
-    // Theme sync for Screen 11
     if (screenId === 11) {
       setTheme(currentTheme);
     }
@@ -5460,178 +5509,135 @@ body.native-app-mode .dynamic-island {
     let next = currentScreenId + dir;
     if (next < 1) next = 12;
     if (next > 12) next = 1;
-    navigateToScreen(next, dir > 0 ? 'forward' : 'back');
+    navigateToScreen(next, dir > 0 ? "forward" : "back");
   }
 
-  // Zoom Controls
   function setZoom(delta) {
-    if (delta === 0) {
-      currentZoom = 100;
-    } else {
-      currentZoom = Math.min(130, Math.max(70, currentZoom + delta));
-    }
-    const canvas = document.getElementById('grid-canvas');
-    const label = document.getElementById('zoom-label');
+    currentZoom = delta === 0 ? 100 : Math.min(130, Math.max(70, currentZoom + delta));
+    const canvas = document.getElementById("grid-canvas");
+    const label = document.getElementById("zoom-label");
     if (canvas) canvas.style.transform = "scale(" + (currentZoom / 100) + ")";
     if (label) label.textContent = currentZoom + "%";
   }
 
-  // Persona Filtering in Grid Mode
   function setFilter(persona, btn) {
     currentFilter = persona;
-    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
+    if (btn) btn.classList.add("active");
 
-    document.querySelectorAll('.screen-column').forEach(col => {
-      const p = col.getAttribute('data-persona') || '';
-      if (persona === 'all' || p.includes(persona)) {
-        col.style.display = 'flex';
-        col.style.opacity = '1';
-      } else {
-        col.style.display = 'none';
-      }
+    document.querySelectorAll(".screen-column").forEach(col => {
+      const p = col.getAttribute("data-persona") || "";
+      col.style.display = (persona === "all" || p.includes(persona)) ? "flex" : "none";
     });
   }
 
-  // Native Fullscreen Mode
   function toggleNativeMode() {
-    document.body.classList.toggle('native-app-mode');
-    if (document.body.classList.contains('native-app-mode')) {
-      showToast('📱 Native App Mode (Edge-to-Edge)');
+    document.body.classList.toggle("native-app-mode");
+    if (document.body.classList.contains("native-app-mode")) {
+      showToast("📱 Native App Mode (Edge-to-Edge)");
     }
   }
 
-  // Checklist Item Tap Physics
   function toggleChecklist(el) {
-    el.classList.toggle('checked');
-    el.classList.add('just-checked');
-    setTimeout(() => el.classList.remove('just-checked'), 400);
+    el.classList.toggle("checked");
+    el.classList.add("just-checked");
+    setTimeout(() => el.classList.remove("just-checked"), 400);
 
-    const isChecked = el.classList.contains('checked');
-    const label = el.querySelector('.check-text') ? el.querySelector('.check-text').textContent : 'Task';
-    showToast(isChecked ? '✓ Completed: ' + label.slice(0, 26) + '...' : '○ Restored: ' + label.slice(0, 26));
+    const isChecked = el.classList.contains("checked");
+    const label = el.querySelector(".check-text") ? el.querySelector(".check-text").textContent : "Task";
+    showToast(isChecked ? "✓ Completed: " + label.slice(0, 26) + "..." : "○ Restored: " + label.slice(0, 26));
   }
 
-  // Interactive Hourly Weather Strip
   function selectHour(el, tempF, label) {
-    const parent = el.closest('.agro-strip');
+    const parent = el.closest(".agro-strip");
     if (parent) {
-      parent.querySelectorAll('.strip-item').forEach(i => i.classList.remove('active'));
-      el.classList.add('active');
+      parent.querySelectorAll(".strip-item").forEach(i => i.classList.remove("active"));
+      el.classList.add("active");
     }
-    const tempHero = document.getElementById('hero-temp-display');
+    const tempHero = document.getElementById("hero-temp-display");
     if (tempHero) {
-      const displayTemp = currentUnits === 'metric' ? Math.round((tempF - 32) * 5/9) + '°C' : tempF + '°F';
+      const displayTemp = currentUnits === "metric" ? Math.round((tempF - 32) * 5/9) + "°C" : tempF + "°F";
       tempHero.innerHTML = displayTemp;
     }
-    showToast(label + ' Forecast: ' + (currentUnits === 'metric' ? Math.round((tempF - 32) * 5/9) + '°C' : tempF + '°F'));
+    showToast(label + " Forecast: " + (currentUnits === "metric" ? Math.round((tempF - 32) * 5/9) + "°C" : tempF + "°F"));
   }
 
-  // Screen 3: Interactive Forecast Tab Switcher
   function switchForecastSubTab(tabName, btn) {
-    const parent = btn.closest('.segmented-ctl');
+    const parent = btn.closest(".segmented-ctl");
     if (parent) {
-      parent.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      parent.querySelectorAll(".seg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
     }
 
-    const container7Day = document.getElementById('forecast-7day-list');
-    const containerHourly = document.getElementById('forecast-hourly-chart');
-    const containerSoil = document.getElementById('forecast-soil-depth');
+    const container7Day = document.getElementById("forecast-7day-list");
+    const containerHourly = document.getElementById("forecast-hourly-chart");
+    const containerSoil = document.getElementById("forecast-soil-depth");
 
-    if (container7Day) container7Day.classList.add('hidden');
-    if (containerHourly) containerHourly.classList.add('hidden');
-    if (containerSoil) containerSoil.classList.add('hidden');
+    if (container7Day) container7Day.classList.add("hidden");
+    if (containerHourly) containerHourly.classList.add("hidden");
+    if (containerSoil) containerSoil.classList.add("hidden");
 
-    if (tabName === '7day' && container7Day) {
-      container7Day.classList.remove('hidden');
-      container7Day.classList.add('anim-tab-fade');
-    } else if (tabName === 'hourly' && containerHourly) {
-      containerHourly.classList.remove('hidden');
-      containerHourly.classList.add('anim-tab-fade');
-    } else if (tabName === 'soil' && containerSoil) {
-      containerSoil.classList.remove('hidden');
-      containerSoil.classList.add('anim-tab-fade');
+    if (tabName === "7day" && container7Day) {
+      container7Day.classList.remove("hidden");
+      container7Day.classList.add("anim-tab-fade");
+    } else if (tabName === "hourly" && containerHourly) {
+      containerHourly.classList.remove("hidden");
+      containerHourly.classList.add("anim-tab-fade");
+    } else if (tabName === "soil" && containerSoil) {
+      containerSoil.classList.remove("hidden");
+      containerSoil.classList.add("anim-tab-fade");
     }
   }
 
-  // Screen 6: Interactive Crop Filter Pills
   function filterCrops(category, btn) {
     const parent = btn.parentElement;
     if (parent) {
-      parent.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      parent.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
     }
 
-    document.querySelectorAll('.crop-card-item').forEach(card => {
-      const cat = card.getAttribute('data-crop-type') || '';
-      if (category === 'all' || cat.includes(category)) {
-        card.style.display = 'flex';
-        card.classList.add('anim-tab-fade');
+    document.querySelectorAll(".crop-card-item").forEach(card => {
+      const cat = card.getAttribute("data-crop-type") || "";
+      if (category === "all" || cat.includes(category)) {
+        card.style.display = "flex";
+        card.classList.add("anim-tab-fade");
       } else {
-        card.style.display = 'none';
+        card.style.display = "none";
       }
     });
   }
 
-  // Unit Converter (°F ↔ °C, in ↔ mm)
   function setUnits(unitType) {
     currentUnits = unitType;
-    document.querySelectorAll('[data-unit-f]').forEach(el => {
-      const f = parseFloat(el.getAttribute('data-unit-f'));
-      if (unitType === 'metric') {
-        const c = Math.round((f - 32) * 5 / 9);
-        el.textContent = c + '°C';
-      } else {
-        el.textContent = f + '°F';
-      }
+    document.querySelectorAll("[data-unit-f]").forEach(el => {
+      const f = parseFloat(el.getAttribute("data-unit-f"));
+      el.textContent = unitType === "metric" ? (Math.round((f - 32) * 5 / 9) + "°C") : (f + "°F");
     });
 
-    document.querySelectorAll('[data-unit-toggle]').forEach(b => {
-      b.classList.remove('active');
-      if (b.getAttribute('data-unit-toggle') === unitType) b.classList.add('active');
+    document.querySelectorAll("[data-unit-toggle]").forEach(b => {
+      b.classList.toggle("active", b.getAttribute("data-unit-toggle") === unitType);
     });
 
-    showToast('Measurement units set to ' + (unitType === 'metric' ? 'Metric (°C / mm)' : 'Imperial (°F / in)'));
-  }
-
-  // Modal Sheet & Toasts
-  function openSheet(title, htmlContent) {
-    const sheet = document.getElementById('app-modal-sheet');
-    const titleEl = document.getElementById('modal-sheet-title');
-    const bodyEl = document.getElementById('modal-sheet-body');
-    if (sheet && titleEl && bodyEl) {
-      titleEl.textContent = title;
-      bodyEl.innerHTML = htmlContent;
-      sheet.classList.add('active');
-    }
-  }
-
-  function closeSheet() {
-    const sheet = document.getElementById('app-modal-sheet');
-    if (sheet) sheet.classList.remove('active');
+    showToast("Measurement units: " + (unitType === "metric" ? "Metric (°C / mm)" : "Imperial (°F / in)"));
   }
 
   function showToast(msg) {
-    const toast = document.getElementById('app-toast');
-    const toastMsg = document.getElementById('toast-msg');
+    const toast = document.getElementById("app-toast");
+    const toastMsg = document.getElementById("toast-msg");
     if (toast && toastMsg) {
       toastMsg.textContent = msg;
-      toast.classList.add('active');
+      toast.classList.add("active");
       clearTimeout(window._toastTimeout);
-      window._toastTimeout = setTimeout(() => {
-        toast.classList.remove('active');
-      }, 2400);
+      window._toastTimeout = setTimeout(() => toast.classList.remove("active"), 2400);
     }
   }
 
-  // Auto-detect mobile devices on load
-  window.addEventListener('DOMContentLoaded', () => {
-    setTheme('light');
+  window.addEventListener("DOMContentLoaded", () => {
+    setTheme("light");
     if (window.innerWidth <= 768) {
-      setViewMode('proto');
+      setViewMode("proto");
     } else {
-      setViewMode('grid');
+      setViewMode("grid");
     }
   });
 </script>

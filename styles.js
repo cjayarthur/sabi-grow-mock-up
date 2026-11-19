@@ -1251,23 +1251,21 @@ body.native-app-mode .dynamic-island {
 
 /* Slide-Up Bottom Sheet Modal */
 .modal-sheet-backdrop {
+  display: none !important;
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.52);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 700;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.26s ease;
-  display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
 .modal-sheet-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .modal-sheet-content {
@@ -1308,8 +1306,9 @@ body.native-app-mode .dynamic-island {
 
 /* Floating Toast Notification */
 .app-toast {
+  display: none !important;
   position: absolute;
-  top: 50px;
+  top: 52px;
   left: 50%;
   transform: translateX(-50%) translateY(-24px);
   background: var(--brand-primary);
@@ -1323,15 +1322,15 @@ body.native-app-mode .dynamic-island {
   opacity: 0;
   pointer-events: none;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
-  display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
 }
 
 .app-toast.active {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
+  display: flex !important;
+  transform: translateX(-50%) translateY(0) !important;
+  opacity: 1 !important;
 }
 
 /* Hide helper */
